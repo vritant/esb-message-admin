@@ -7,7 +7,7 @@ module.exports = function(config) {
 
                 // base path that will be used to resolve all patterns (eg.
                 // files, exclude)
-                basePath : '../..',
+                basePath : '../../../../',
 
                 // frameworks to use
                 // available frameworks:
@@ -16,18 +16,18 @@ module.exports = function(config) {
 
                 // list of files / patterns to load in the browser
                 files : [
-                        "main/webapp/bower_components/jquery/dist/jquery.min.js",
-                        "main/webapp/bower_components/bootstrap/dist/js/bootstrap.min.js",
-                        "main/webapp/bower_components/angular/angular.min.js",
-                        "main/webapp/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
-                        "main/webapp/bower_components/angular-route/angular-route.min.js",
-                        "main/webapp/bower_components/angular-mocks/angular-mocks.js",
-                        "main/webapp/bower_components/ng-grid/build/ng-grid.min.js",
-                        "main/webapp/bower_components/angucomplete-keyvalue/angucomplete.js",
-                        "main/webapp/bower_components/ngQuickDate/dist/ng-quick-date.min.js",
-                        "main/webapp/bower_components/angular-loading-bar/build/loading-bar.min.js",
-                        "main/webapp/bower_components/message-center/message-center.js",
-                        "main/webapp/js/*.js", "test/js/*.js" ],
+                        "app/src/main/webapp/bower_components/jquery/dist/jquery.min.js",
+                        "app/src/main/webapp/bower_components/bootstrap/dist/js/bootstrap.min.js",
+                        "app/src/main/webapp/bower_components/angular/angular.min.js",
+                        "app/src/main/webapp/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
+                        "app/src/main/webapp/bower_components/angular-route/angular-route.min.js",
+                        "app/src/main/webapp/bower_components/angular-mocks/angular-mocks.js",
+                        "app/src/main/webapp/bower_components/ng-grid/build/ng-grid.min.js",
+                        "app/src/main/webapp/bower_components/angucomplete-keyvalue/angucomplete.js",
+                        "app/src/main/webapp/bower_components/ngQuickDate/dist/ng-quick-date.min.js",
+                        "app/src/main/webapp/bower_components/angular-loading-bar/build/loading-bar.min.js",
+                        "app/src/main/webapp/bower_components/message-center/message-center.js",
+                        "app/src/main/webapp/js/*.js", "app/src/test/js/*.js" ],
 
                 // list of files to exclude
                 exclude : [
@@ -37,13 +37,20 @@ module.exports = function(config) {
                 // preprocess matching files before serving them to the browser
                 // available preprocessors:
                 // https://npmjs.org/browse/keyword/karma-preprocessor
-                preprocessors : {},
-
+                reporters : [ 'coverage' ],
+                preprocessors : {
+                    "app/src/main/webapp/js/*.js" : "coverage"
+                },
+                coverageReporter : {
+                    type : "lcov",
+                    dir : "coverage/"
+                },
+                plugins : [ 'karma-coverage', 'karma-jasmine',
+                        "karma-phantomjs-launcher" ],
                 // test results reporter to use
                 // possible values: 'dots', 'progress'
                 // available reporters:
                 // https://npmjs.org/browse/keyword/karma-reporter
-                reporters : [ 'progress' ],
 
                 // web server port
                 port : 9876,

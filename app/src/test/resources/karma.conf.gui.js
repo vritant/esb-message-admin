@@ -6,6 +6,9 @@ module.exports = function(config) {
     config.set({
         singleRun : false,
         autoWatch : true,
-        browsers : [ 'Chrome', 'Firefox' ]
+        browsers : [ 'Chrome', 'Firefox' ],
+        plugins : [ 'karma-coverage', 'karma-jasmine',
+                "karma-firefox-launcher", "karma-chrome-launcher" ],
+
     });
 };
