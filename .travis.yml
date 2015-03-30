@@ -9,9 +9,9 @@ script:
 after_success:
 - '[[ $TRAVIS_BRANCH == "master" ]] && [[ $TRAVIS_JDK_VERSION == "openjdk7" ]] &&
   { mvn -B clean deploy -DskipTests; };'
-- cat coverage/*/lcov.info | ./app/node_modules/coveralls/bin/coveralls.js
 after_script:
 - mvn clean -DsourceEncoding=UTF-8 cobertura:cobertura coveralls:report
+- cat coverage/*/lcov.info | ./app/node_modules/coveralls/bin/coveralls.js
 notifications:
   email: false
   irc:
