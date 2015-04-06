@@ -25,11 +25,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.esbtools.message.admin.common.Configuration;
 import org.esbtools.message.admin.common.ConversionUtility;
 import org.esbtools.message.admin.common.orm.EsbMessageEntity;
 import org.esbtools.message.admin.common.orm.EsbMessageHeaderEntity;
@@ -51,7 +53,8 @@ public class EsbErrorDAOImpl implements EsbErrorDAO {
     private static final String payloadHiddenText = "Payload has been hidden";
 
     private Set<String> sortingFields = new HashSet<>();
-    private List<List<String>> nonViewableCriteria = null;
+    private List<Configuration> nonViewableConfiguration = null;
+    private List<Configuration> partiallyViewableConfiguration = null;
     public EsbErrorDAOImpl(EntityManager mgr, JSONObject config) {
         this.mgr=mgr;
         JSONArray sortFields = (JSONArray) config.get("sortingFields");
@@ -60,14 +63,21 @@ public class EsbErrorDAOImpl implements EsbErrorDAO {
                 sortingFields.add(sortFields.get(i).toString());
             }
         }
-        nonViewableCriteria = ConversionUtility.getCriteria((JSONArray) config.get("nonViewableMessages"));
+        nonViewableConfiguration = ConversionUtility.getConfigurations((JSONArray) config.get("nonViewableMessages"));
+        partiallyViewableConfiguration = ConversionUtility.getConfigurations((JSONArray) config.get("partiallyViewableMessages"));
     }
 
     /**
      * {@inheritDoc}
      */
-    public void create(EsbMessageEntity eme, Map<String, List<String>> extractedHeaders) {
+    public void create(EsbMessage em, Map<String, List<String>> extractedHeaders) {
 
+        Map<String,String> matchedConfiguration = matchCriteria(em, partiallyViewableConfiguration);
+        if(matchedConfiguration!=null) {
+            Pattern compiledPattern = Pattern.compile( matchedConfiguration.get("searchRegex"), Pattern.DOTALL|Pattern.CASE_INSENSITIVE);
+            em.setPayload(compiledPattern.matcher(em.getPayload()).replaceFirst(matchedConfiguration.get("replaceRegex")));
+        }
+        EsbMessageEntity eme = ConversionUtility.convertFromEsbMessage(em);
         for (Entry<String, List<String>> headerSet : extractedHeaders.entrySet()) {
             for(String value : headerSet.getValue()) {
                 EsbMessageHeaderEntity extractedHeader= new EsbMessageHeaderEntity();
@@ -203,7 +213,8 @@ public class EsbErrorDAOImpl implements EsbErrorDAO {
             result.setTotalResults(1);
             EsbMessage[] messageArray = new EsbMessage[1];
             messageArray[0] = ConversionUtility.convertToEsbMessage(messages.get(0));
-            if(matchesCriteria(messageArray[0], nonViewableCriteria)) {
+            Map<String,String> matchedConfiguration = matchCriteria(messageArray[0], nonViewableConfiguration);
+            if(matchedConfiguration!=null) {
                 messageArray[0].setPayload(payloadHiddenText);
             }
             result.setMessages(messageArray);
@@ -211,21 +222,21 @@ public class EsbErrorDAOImpl implements EsbErrorDAO {
         return result;
     }
 
-    private boolean matchesCriteria(EsbMessage message, List<List<String>> criteria) {
+    private Map<String,String> matchCriteria(EsbMessage message, List<Configuration> configurations) {
         String messageString = message.toString().toLowerCase();
-        for(List<String> criterion: criteria) {
+        for(Configuration conf: configurations) {
             boolean matched = true;
-            for(String matchCondition: criterion) {
-                if(!messageString.contains(matchCondition)) {
+            for(Entry<String,String> matchCondition: conf.getMatchCriteriaMap().entrySet()) {
+                if(!messageString.contains(matchCondition.toString().toLowerCase())) {
                     matched = false;
                     break;
                 }
             }
             if(matched) {
-                return true;
+                return conf.getConfigurationMap();
             }
         }
-        return false;
+        return null;
     }
 
     public List<EsbMessageEntity> getMessagesByPayloadHash(String payloadHash) {

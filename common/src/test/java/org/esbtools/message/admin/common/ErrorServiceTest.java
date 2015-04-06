@@ -190,6 +190,43 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
     }
 
     @Test
+    public void testPartialViewMessages() {
+        EsbMessage esbMessage = createTestMessage(154, 0);
+        String payload = "<Payload><Hello> is it me you're looking for ?</Hello>"+
+                "<Example>I can see it in your eyes</Example></Payload>";
+        esbMessage.setPayload(payload);
+        esbMessage.setSourceSystem("PartiaSourceSystemOne");
+        esbMessage.setMessageType("PartialEntityOne");
+        try {
+            service.persist(esbMessage);
+        } catch (IOException e) {
+            Assert.fail();
+        }
+        Criterion[] c1 = {new Criterion(SearchField.sourceSystem, "PartiaSourceSystemOne")};
+        SearchCriteria criteria = new SearchCriteria();
+        criteria.setCriteria(c1);
+        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "sourceSystem", false, 0, 10);
+        result = service.getMessageById(result.getMessages()[0].getId());
+        Assert.assertEquals("<Payload><Hello> is it me you're looking for ?</Hello>"+
+                "<Example>Sensitive Information is not viewable</Example></Payload>", result.getMessages()[0].getPayload());
+
+        esbMessage.setMessageType("PartialEntityTwo");
+        payload = "{\"message\": { \"id\": \"blah\", \"Example\": \"sensitive\" }}";
+        esbMessage.setPayload(payload);
+        try {
+            service.persist(esbMessage);
+        } catch (IOException e) {
+            Assert.fail();
+        }
+        Criterion[] c2 = {new Criterion(SearchField.messageType, "PartialEntityTwo")};
+        criteria.setCriteria(c2);
+        result = service.searchMessagesByCriteria(criteria, null, null, "sourceSystem", false, 0, 10);
+        result = service.getMessageById(result.getMessages()[0].getId());
+        // TODO : fix example json regex
+        Assert.assertEquals(payload, result.getMessages()[0].getPayload());
+    }
+
+    @Test
     public void testFetchPayload() {
         EsbMessage esbMessage = createTestMessage(12, 0);
         esbMessage.setPayload("<Payload>Payload</Payload>");

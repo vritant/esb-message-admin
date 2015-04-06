@@ -15,11 +15,42 @@
     ],
     "nonViewableMessages":[
         {
-            "messageType":"EntityOne",
-            "sourceSystem":"SourceSystemOne"
+            "matchCriteria":{
+                "messageType":"EntityOne",
+                "sourceSystem":"SourceSystemOne"
+            },
+            "configuration":{
+                "viewable":"false"
+            }
         },
         {
-            "sourceSystem":"SourceSystemTwo"
+            "matchCriteria":{
+                "sourceSystem":"SourceSystemTwo"
+            },
+            "configuration":{
+                "viewable":"false"
+            }
+        }
+    ],
+    "partiallyViewableMessages":[
+        {
+            "matchCriteria":{
+                "messageType":"PartialEntityOne",
+                "sourceSystem":"PartiaSourceSystemOne"
+            },
+            "configuration":{
+                "searchRegex":"<(Example)>((?!(Example)).)*</(Example)>",
+                "replaceRegex":"<$1>Sensitive Information is not viewable</$1>"
+            }
+        },
+        {
+            "matchCriteria":{
+                "messageType":"PartialEntityTwo"
+            },
+            "configuration":{
+                "searchRegex":"\"(Example)\":\\{(?:[^{}]*|(?:\\{[^{}]*\\}))*\\}",
+                "replaceRegex":"\"$1\":\"MASKED\""
+            }
         }
     ],
     "resyncRestEndpoints":[
