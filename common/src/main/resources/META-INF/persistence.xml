@@ -18,4 +18,18 @@
             <property name="hibernate.hbm2ddl.auto" value="update" />
       </properties>
    </persistence-unit>
+
+   <persistence-unit name="EsbMessageAdminSecretPU">
+      <jta-data-source>java:/ESBMessageAdminSecretDS</jta-data-source>
+      <class>org.esbtools.message.admin.common.orm.EsbMessageSecretEntity</class>
+      <properties>
+          <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+            <property name="hibernate.show_sql" value="true"></property>
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+            <property name="hibernate.cache.use_query_cache" value="true" />
+            <property name="hibernate.cache.use_minimal_puts" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+      </properties>
+   </persistence-unit>
 </persistence>

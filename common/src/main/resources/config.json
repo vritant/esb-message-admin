@@ -20,7 +20,7 @@
                 "sourceSystem":"SourceSystemOne"
             },
             "configuration":{
-                "viewable":"false"
+                "replaceMessage":"EntityOne messages from SourceSystemOne are restricted"
             }
         },
         {
@@ -28,7 +28,7 @@
                 "sourceSystem":"SourceSystemTwo"
             },
             "configuration":{
-                "viewable":"false"
+                "replaceMessage":"SourceSystemTwo messages are restricted"
             }
         }
     ],
@@ -39,8 +39,8 @@
                 "sourceSystem":"PartiaSourceSystemOne"
             },
             "configuration":{
-                "searchRegex":"<(Example)>((?!(Example)).)*</(Example)>",
-                "replaceRegex":"<$1>Sensitive Information is not viewable</$1>"
+                "sensitiveTag":"Example",
+                "replacementText":"Sensitive Information is not viewable"
             }
         },
         {

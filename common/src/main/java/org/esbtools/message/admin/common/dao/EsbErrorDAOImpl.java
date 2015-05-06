@@ -18,6 +18,7 @@
  */
 package org.esbtools.message.admin.common.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
@@ -35,6 +37,7 @@ import org.esbtools.message.admin.common.Configuration;
 import org.esbtools.message.admin.common.ConversionUtility;
 import org.esbtools.message.admin.common.orm.EsbMessageEntity;
 import org.esbtools.message.admin.common.orm.EsbMessageHeaderEntity;
+import org.esbtools.message.admin.common.orm.EsbMessageSecretEntity;
 import org.esbtools.message.admin.model.Criterion;
 import org.esbtools.message.admin.model.EsbMessage;
 import org.esbtools.message.admin.model.HeaderType;
@@ -50,7 +53,6 @@ public class EsbErrorDAOImpl implements EsbErrorDAO {
     private final static Logger log = Logger.getLogger(EsbErrorDAOImpl.class.getName());
 
     private static final String MESSAGE_PROPERTY_PAYLOAD_HASH = "esbPayloadHash";
-    private static final String payloadHiddenText = "Payload has been hidden";
 
     private Set<String> sortingFields = new HashSet<>();
     private List<Configuration> nonViewableConfiguration = null;
@@ -72,12 +74,23 @@ public class EsbErrorDAOImpl implements EsbErrorDAO {
      */
     public void create(EsbMessage em, Map<String, List<String>> extractedHeaders) {
 
+        EsbMessageEntity eme = ConversionUtility.convertFromEsbMessage(em);
+
         Map<String,String> matchedConfiguration = matchCriteria(em, partiallyViewableConfiguration);
         if(matchedConfiguration!=null) {
-            Pattern compiledPattern = Pattern.compile( matchedConfiguration.get("searchRegex"), Pattern.DOTALL|Pattern.CASE_INSENSITIVE);
-            em.setPayload(compiledPattern.matcher(em.getPayload()).replaceFirst(matchedConfiguration.get("replaceRegex")));
+            String parentTag = matchedConfiguration.get("searchRegex");
+            Pattern pattern = Pattern.compile("<("+parentTag+")>((?!<("+parentTag+")>).)*</("+parentTag+")>", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(em.getPayload());
+            ArrayList<EsbMessageSecretEntity> sensitiveInformation = new ArrayList<>();
+
+            while(matcher.find()) {
+                sensitiveInformation.add(new EsbMessageSecretEntity(eme, matcher.group(0)) );
+            }
+            matcher.reset();
+
+            em.setPayload(matcher.replaceAll("<$1>"+matchedConfiguration.get("replacementText")+"</$1>"));
         }
-        EsbMessageEntity eme = ConversionUtility.convertFromEsbMessage(em);
+
         for (Entry<String, List<String>> headerSet : extractedHeaders.entrySet()) {
             for(String value : headerSet.getValue()) {
                 EsbMessageHeaderEntity extractedHeader= new EsbMessageHeaderEntity();
@@ -215,7 +228,7 @@ public class EsbErrorDAOImpl implements EsbErrorDAO {
             messageArray[0] = ConversionUtility.convertToEsbMessage(messages.get(0));
             Map<String,String> matchedConfiguration = matchCriteria(messageArray[0], nonViewableConfiguration);
             if(matchedConfiguration!=null) {
-                messageArray[0].setPayload(payloadHiddenText);
+                messageArray[0].setPayload(matchedConfiguration.get("replaceMessage"));
             }
             result.setMessages(messageArray);
         }
