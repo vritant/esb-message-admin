@@ -37,7 +37,7 @@ import org.esbtools.message.admin.common.Configuration;
 import org.esbtools.message.admin.common.ConversionUtility;
 import org.esbtools.message.admin.common.orm.EsbMessageEntity;
 import org.esbtools.message.admin.common.orm.EsbMessageHeaderEntity;
-import org.esbtools.message.admin.common.orm.EsbMessageSecretEntity;
+import org.esbtools.message.admin.common.orm.EsbMessageSensitiveInfoEntity;
 import org.esbtools.message.admin.model.Criterion;
 import org.esbtools.message.admin.model.EsbMessage;
 import org.esbtools.message.admin.model.HeaderType;
@@ -78,17 +78,16 @@ public class EsbErrorDAOImpl implements EsbErrorDAO {
 
         Map<String,String> matchedConfiguration = matchCriteria(em, partiallyViewableConfiguration);
         if(matchedConfiguration!=null) {
-            String parentTag = matchedConfiguration.get("searchRegex");
-            Pattern pattern = Pattern.compile("<("+parentTag+")>((?!<("+parentTag+")>).)*</("+parentTag+")>", Pattern.CASE_INSENSITIVE);
+            String parentTag = matchedConfiguration.get("sensitiveTag");
+            Pattern pattern = Pattern.compile("<("+parentTag+")>((?!<("+parentTag+")>).)*</("+parentTag+")>");
             Matcher matcher = pattern.matcher(em.getPayload());
-            ArrayList<EsbMessageSecretEntity> sensitiveInformation = new ArrayList<>();
-
+            ArrayList<EsbMessageSensitiveInfoEntity> sensitiveInformation = new ArrayList<>();
             while(matcher.find()) {
-                sensitiveInformation.add(new EsbMessageSecretEntity(eme, matcher.group(0)) );
+                sensitiveInformation.add(new EsbMessageSensitiveInfoEntity(eme, matcher.group(0)) );
             }
             matcher.reset();
-
-            em.setPayload(matcher.replaceAll("<$1>"+matchedConfiguration.get("replacementText")+"</$1>"));
+            String test = matcher.replaceAll("<$1>"+matchedConfiguration.get("replacementText")+"</$1>");
+            eme.setPayload(test);
         }
 
         for (Entry<String, List<String>> headerSet : extractedHeaders.entrySet()) {

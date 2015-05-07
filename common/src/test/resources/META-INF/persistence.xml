@@ -5,22 +5,9 @@
    <persistence-unit name="EsbMessageAdminTestPU" transaction-type="RESOURCE_LOCAL">
       <class>org.esbtools.message.admin.common.orm.EsbMessageEntity</class>
       <class>org.esbtools.message.admin.common.orm.EsbMessageHeaderEntity</class>
+      <class>org.esbtools.message.admin.common.orm.EsbMessageSensitiveInfoEntity</class>
       <class>org.esbtools.message.admin.common.orm.MetadataEntity</class>
       <class>org.esbtools.message.admin.common.orm.AuditEventEntity</class>
-       <properties>
-         <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
-         <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
-         <property name="hibernate.connection.username" value="sa"/>
-         <property name="hibernate.connection.password" value=""/>
-         <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:esbmessageadmin;sql.syntax_mys=true"/>
-         <property name="hibernate.max_fetch_depth" value="3"/>
-         <property name="hibernate.show_sql" value="true" />
-         <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-      </properties>
-   </persistence-unit>
-
-   <persistence-unit name="EsbMessageAdminSecretTestPU" transaction-type="RESOURCE_LOCAL">
-      <class>org.esbtools.message.admin.common.orm.EsbMessageSecretEntity</class>
        <properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
          <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>

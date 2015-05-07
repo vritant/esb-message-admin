@@ -231,25 +231,28 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
     @Test
     public void regexTest() {
 
-      String text = "<Payload><Hello> is it me you're looking for ?</Hello>"+
+      String oldText = "<Payload><Hello> is it me you're looking for ?</Hello>"+
                 "<Example>I can see it in your eyes</Example>"+
               "<Example>I can see it in your soul</Example></Payload> ";
-
+      String text = oldText;
       String parentTag = "Example", replaceText = "Sensitive Information is not viewable";
 
       Pattern pattern = Pattern.compile("<("+parentTag+")>((?!<("+parentTag+")>).)*</("+parentTag+")>");
       Matcher matcher = pattern.matcher(text);
 
-      System.out.println("first "+text);
-
       ArrayList<String> sensitiveInformation = new ArrayList<>();
       while(matcher.find()) {
           sensitiveInformation.add(matcher.group(0));
       }
+      Assert.assertEquals(2, sensitiveInformation.size());
+      Assert.assertEquals("<Example>I can see it in your eyes</Example>", sensitiveInformation.get(0));
+      Assert.assertEquals("<Example>I can see it in your soul</Example>", sensitiveInformation.get(1));
       matcher.reset();
 
       text = matcher.replaceAll("<$1>"+replaceText+"</$1>");
-      System.out.println("masked "+text);
+      Assert.assertEquals( "<Payload><Hello> is it me you're looking for ?</Hello>"+
+              "<Example>Sensitive Information is not viewable</Example>"+
+            "<Example>Sensitive Information is not viewable</Example></Payload> ", text);
 
       String patternString2 = "<"+parentTag+">"+replaceText+"</"+parentTag+">";
       Pattern pattern2 = Pattern.compile(patternString2);
@@ -257,7 +260,7 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
       for(String info: sensitiveInformation) {
           text = pattern2.matcher(text).replaceFirst(info);
       }
-      System.out.println("Tirst "+text);
+      Assert.assertEquals( oldText, text);
 
     }
 

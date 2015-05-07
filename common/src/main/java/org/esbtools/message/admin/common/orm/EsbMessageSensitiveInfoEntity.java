@@ -31,8 +31,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ESB_MESSAGE_SECRET", schema="asd")
-public class EsbMessageSecretEntity implements Serializable {
+@Table(name="ESB_MESSAGE_SENSITIVE_INFO", schema="asd")
+public class EsbMessageSensitiveInfoEntity implements Serializable {
 
     private static final long serialVersionUID = 357984147079041238L;
 
@@ -47,12 +47,12 @@ public class EsbMessageSecretEntity implements Serializable {
     @JoinColumn(name="message_id")
     private EsbMessageEntity esbMessage;
 
-    public EsbMessageSecretEntity(EsbMessageEntity esbMessage, String value ) {
+    public EsbMessageSensitiveInfoEntity(EsbMessageEntity esbMessage, String value ) {
         this.esbMessage = esbMessage;
         this.value = value;
     }
 
-    public EsbMessageSecretEntity() {}
+    public EsbMessageSensitiveInfoEntity() {}
 
     public Long getId() {
         return id;

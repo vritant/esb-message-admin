@@ -102,7 +102,7 @@ public class EsbMessageEntity implements Serializable {
     private List<EsbMessageHeaderEntity> errorHeaders;
 
     @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, mappedBy = "esbMessage" , fetch=FetchType.LAZY)
-    private List<EsbMessageSecretEntity> errorSecrets;
+    private List<EsbMessageSensitiveInfoEntity> errorSecrets;
 
     public Long getId() {
         return id;
@@ -248,11 +248,11 @@ public class EsbMessageEntity implements Serializable {
         this.errorHeaders = errorHeaders;
     }
 
-    public List<EsbMessageSecretEntity> getErrorSecrets() {
+    public List<EsbMessageSensitiveInfoEntity> getErrorSecrets() {
         return errorSecrets;
     }
 
-    public void setErrorSecrets(List<EsbMessageSecretEntity> errorSecrets) {
+    public void setErrorSecrets(List<EsbMessageSensitiveInfoEntity> errorSecrets) {
         this.errorSecrets = errorSecrets;
     }
 
