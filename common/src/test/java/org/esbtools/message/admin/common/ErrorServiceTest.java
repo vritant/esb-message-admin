@@ -228,8 +228,11 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
         Assert.assertEquals(payload, result.getMessages()[0].getPayload());
     }
 
+    /*
+     * segregating sensitive info and resubmit proof of concept
+     */
     @Test
-    public void regexTest() {
+    public void resubmitTest() {
 
       String oldText = "<Payload><Hello> is it me you're looking for ?</Hello>"+
                 "<Example>I can see it in your eyes</Example>"+
