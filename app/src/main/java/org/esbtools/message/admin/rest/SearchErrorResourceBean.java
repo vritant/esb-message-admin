@@ -84,7 +84,7 @@ public class SearchErrorResourceBean {
                                              @QueryParam("toDate") String toDate,
                                              @QueryParam("start") Integer start,
                                              @QueryParam("results") Integer maxResults) throws IOException {
-        SearchCriteria criteria = new SearchCriteria(SearchField.errorQueue, queue);
+        SearchCriteria criteria = new SearchCriteria(SearchField.esbErrorQueue, queue);
         return client.get().searchMessagesByCriteria(criteria, getDate(fromDate), getDate(toDate), null, true, start, maxResults);
     }
 

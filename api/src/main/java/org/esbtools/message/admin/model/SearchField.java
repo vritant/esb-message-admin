@@ -26,17 +26,17 @@ import java.util.Set;
 
 public enum SearchField {
     id(Long.class),
-    errorQueue(String.class),
-    messageId(Long.class),
-    messageGuid(String.class),
-    messageType(String.class),
-    sourceQueue(String.class),
-    sourceSystem(String.class),
-    originalSystem(String.class),
-    queueName(String.class),
-    queueLocation(String.class),
-    errorComponent(String.class),
-    serviceName(String.class),
+    esbErrorQueue(String.class),
+    esbMessageId(Long.class),
+    esbMessageGuid(String.class),
+    esbMessageType(String.class),
+    esbSourceQueue(String.class),
+    esbSourceSystem(String.class),
+    esbOriginalSystem(String.class),
+    esbQueueName(String.class),
+    esbQueueLocation(String.class),
+    esbErrorComponent(String.class),
+    esbServiceName(String.class),
     customHeader(String.class);
 
     private Class valueType;

@@ -172,7 +172,7 @@ public class EsbErrorDAOImpl implements EsbErrorDAO {
 
     private Query getQueryFromCriteria(SearchCriteria criteria, String sortField, boolean sortAsc, Date fromDate, Date toDate, boolean countQuery) {
         // to do : read display fields from a config file and set select fields only on result object.
-        String projection = (countQuery) ? " count( distinct e.id) " : " distinct e.id, e.timestamp, e.messageType, e.sourceSystem, e.errorSystem, e.occurrenceCount ";
+        String projection = (countQuery) ? " count( distinct e.id) " : " distinct e.id, e.timestamp, e.esbMessageType, e.esbSourceSystem, e.esbErrorSystem, e.occurrenceCount ";
         StringBuilder queryBuilder = new StringBuilder("select" + projection + "from EsbMessageEntity e ");
 
         int i = 0;

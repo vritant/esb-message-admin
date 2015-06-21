@@ -8,9 +8,9 @@
     "sortingFields":[
         "id",
         "timestamp",
-        "messageType",
-        "sourceSystem",
-        "errorSystem",
+        "esbMessageType",
+        "esbSourceSystem",
+        "esbErrorSystem",
         "occurrenceCount"
     ],
     "nonViewableMessages":[

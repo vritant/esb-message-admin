@@ -49,34 +49,34 @@ public class EsbMessageEntity implements Serializable {
     private Long id;
 
     @Column(name="error_queue")
-    private String errorQueue;
+    private String esbErrorQueue;
 
     @Column(name = "jms_message_id")
-    private String messageId;
+    private String esbMessageId;
 
     @Column(name = "jms_message_timestamp")
     private Date timestamp;
 
     @Column(name="message_guid")
-    private String messageGuid;
+    private String esbMessageGuid;
 
     @Column(name = "message_type")
-    private String messageType;
+    private String esbMessageType;
 
     @Column(name="source_queue")
-    private String sourceQueue;
+    private String esbSourceQueue;
 
     @Column(name="source_location")
-    private String sourceLocation;
+    private String esbSourceLocation;
 
     @Column(name="source_system")
-    private String sourceSystem;
+    private String esbSourceSystem;
 
     @Column(name="service_name")
-    private String serviceName;
+    private String esbServiceName;
 
     @Column(name="error_component")
-    private String errorComponent;
+    private String esbErrorComponent;
 
     @Column(name="error_message")
     private String errorMessage;
@@ -85,7 +85,7 @@ public class EsbMessageEntity implements Serializable {
     private String errorDetails;
 
     @Column(name = "error_system")
-    private String errorSystem;
+    private String esbErrorSystem;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "error_type")
@@ -113,19 +113,19 @@ public class EsbMessageEntity implements Serializable {
     }
 
     public String getErrorQueue() {
-        return errorQueue;
+        return esbErrorQueue;
     }
 
     public void setErrorQueue(String errorQueue) {
-        this.errorQueue = errorQueue;
+        this.esbErrorQueue = errorQueue;
     }
 
     public String getMessageId() {
-        return messageId;
+        return esbMessageId;
     }
 
     public void setMessageId(String messageId) {
-        this.messageId = messageId;
+        this.esbMessageId = messageId;
     }
 
     public Date getTimestamp() {
@@ -137,59 +137,59 @@ public class EsbMessageEntity implements Serializable {
     }
 
     public String getMessageGuid() {
-        return messageGuid;
+        return esbMessageGuid;
     }
 
     public void setMessageGuid(String messageGuid) {
-        this.messageGuid = messageGuid;
+        this.esbMessageGuid = messageGuid;
     }
 
     public String getMessageType() {
-        return messageType;
+        return esbMessageType;
     }
 
     public void setMessageType(String messageType) {
-        this.messageType = messageType;
+        this.esbMessageType = messageType;
     }
 
     public String getSourceQueue() {
-        return sourceQueue;
+        return esbSourceQueue;
     }
 
     public void setSourceQueue(String sourceQueue) {
-        this.sourceQueue = sourceQueue;
+        this.esbSourceQueue = sourceQueue;
     }
 
     public String getSourceLocation() {
-        return sourceLocation;
+        return esbSourceLocation;
     }
 
     public void setSourceLocation(String sourceLocation) {
-        this.sourceLocation = sourceLocation;
+        this.esbSourceLocation = sourceLocation;
     }
 
     public String getSourceSystem() {
-        return sourceSystem;
+        return esbSourceSystem;
     }
 
     public void setSourceSystem(String sourceSystem) {
-        this.sourceSystem = sourceSystem;
+        this.esbSourceSystem = sourceSystem;
     }
 
     public String getServiceName() {
-        return serviceName;
+        return esbServiceName;
     }
 
     public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
+        this.esbServiceName = serviceName;
     }
 
     public String getErrorComponent() {
-        return errorComponent;
+        return esbErrorComponent;
     }
 
     public void setErrorComponent(String errorComponent) {
-        this.errorComponent = errorComponent;
+        this.esbErrorComponent = errorComponent;
     }
 
     public String getErrorMessage() {
@@ -209,11 +209,11 @@ public class EsbMessageEntity implements Serializable {
     }
 
     public String getErrorSystem() {
-        return errorSystem;
+        return esbErrorSystem;
     }
 
     public void setErrorSystem(String errorSystem) {
-        this.errorSystem = errorSystem;
+        this.esbErrorSystem = errorSystem;
     }
 
     public ErrorType getErrorType() {

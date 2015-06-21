@@ -74,7 +74,7 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
 
         // test searching by Message Guid
         SearchCriteria criteria1 = new SearchCriteria();
-        Criterion[] c1 = {new Criterion(SearchField.sourceSystem, "SRC")};
+        Criterion[] c1 = {new Criterion(SearchField.esbSourceSystem, "SRC")};
         criteria1.setCriteria(c1);
         SearchResult result = service.searchMessagesByCriteria(criteria1, null, null, null, true, 0, 10);
 
@@ -93,7 +93,7 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
         }
         
         SearchCriteria criteria1 = new SearchCriteria();
-        Criterion[] c1 = {new Criterion(SearchField.messageGuid, "MessageGuid0")};
+        Criterion[] c1 = {new Criterion(SearchField.esbMessageGuid, "MessageGuid0")};
         criteria1.setCriteria(c1);
         SearchResult result = service.searchMessagesByCriteria(criteria1, null, null, null, true, 0, 10);
         
@@ -110,7 +110,7 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
         }
 
         SearchCriteria criteria2 = new SearchCriteria();
-        Criterion[] c2 = { new Criterion(SearchField.messageGuid, "MessageGuid0"), new Criterion(SearchField.sourceSystem, "SourceSystem0") };
+        Criterion[] c2 = { new Criterion(SearchField.esbMessageGuid, "MessageGuid0"), new Criterion(SearchField.esbSourceSystem, "SourceSystem0") };
         criteria2.setCriteria(c2);
         SearchResult result = service.searchMessagesByCriteria(criteria2, null, null, null, true, 0, 10);
 
@@ -145,7 +145,7 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
         }
 
         SearchCriteria criteria1 = new SearchCriteria();
-        Criterion[] c1 = {new Criterion(SearchField.messageGuid, "messageguid0")};
+        Criterion[] c1 = {new Criterion(SearchField.esbMessageGuid, "messageguid0")};
         criteria1.setCriteria(c1);
         SearchResult result = service.searchMessagesByCriteria(criteria1, null, null, null, true, 0, 10);
 
@@ -163,8 +163,8 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
 
         SearchCriteria criteria2 = new SearchCriteria();
         Criterion[] c2 = {
-                new Criterion(SearchField.messageGuid, "messageguid0"),
-                new Criterion(SearchField.sourceSystem, "sourcesystem0")
+                new Criterion(SearchField.esbMessageGuid, "messageguid0"),
+                new Criterion(SearchField.esbSourceSystem, "sourcesystem0")
         };
         criteria2.setCriteria(c2);
         SearchResult result = service.searchMessagesByCriteria(criteria2, null, null, null, true, 0, 10);
@@ -204,10 +204,10 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
         } catch (IOException e) {
             Assert.fail();
         }
-        Criterion[] c1 = {new Criterion(SearchField.sourceSystem, "PartiaSourceSystemOne")};
+        Criterion[] c1 = {new Criterion(SearchField.esbSourceSystem, "PartiaSourceSystemOne")};
         SearchCriteria criteria = new SearchCriteria();
         criteria.setCriteria(c1);
-        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "sourceSystem", false, 0, 10);
+        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "esbSourceSystem", false, 0, 10);
         result = service.getMessageById(result.getMessages()[0].getId());
         Assert.assertEquals("<Payload><Hello> is it me you're looking for ?</Hello>"+
                 "<Example>Sensitive Information is not viewable</Example></Payload>", result.getMessages()[0].getPayload());
@@ -227,10 +227,10 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
         } catch (IOException e) {
             Assert.fail();
         }
-        Criterion[] c2 = {new Criterion(SearchField.messageType, "PartialEntityTwo")};
+        Criterion[] c2 = {new Criterion(SearchField.esbMessageType, "PartialEntityTwo")};
         SearchCriteria criteria = new SearchCriteria();
         criteria.setCriteria(c2);
-        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "sourceSystem", false, 0, 10);
+        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "esbSourceSystem", false, 0, 10);
         result = service.getMessageById(result.getMessages()[0].getId());
         //Assert.assertEquals("{\"message\": { \"id\": \"blah\", \"Example\": \"I will never tell you my credit card number\" }}", result.getMessages()[0].getPayload());
     }
@@ -285,10 +285,10 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
             Assert.fail();
         }
 
-        Criterion[] c1 = {new Criterion(SearchField.sourceSystem, "SourceSystem12")};
+        Criterion[] c1 = {new Criterion(SearchField.esbSourceSystem, "SourceSystem12")};
         SearchCriteria criteria = new SearchCriteria();
         criteria.setCriteria(c1);
-        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "sourceSystem", false, 0, 10);
+        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "esbSourceSystem", false, 0, 10);
 
         Assert.assertEquals(1, result.getMessages().length);
         Assert.assertEquals("SourceSystem12",result.getMessages()[0].getSourceSystem());
@@ -311,9 +311,9 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
         }
 
         SearchCriteria criteria = new SearchCriteria();
-        Criterion[] c1 = {new Criterion(SearchField.sourceSystem, "SourceSystemTwo")};
+        Criterion[] c1 = {new Criterion(SearchField.esbSourceSystem, "SourceSystemTwo")};
         criteria.setCriteria(c1);
-        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "sourceSystem", false, 0, 10);
+        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "esbSourceSystem", false, 0, 10);
 
         // if the match criterion has just one condition, and the message satisfies it, payload should be hidden
         Assert.assertEquals(1, result.getMessages().length);
@@ -337,10 +337,10 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
         } catch (IOException e) {
             Assert.fail();
         }
-        Criterion[] c2 = {new Criterion(SearchField.sourceSystem, "SourceSystemOne")};
+        Criterion[] c2 = {new Criterion(SearchField.esbSourceSystem, "SourceSystemOne")};
         SearchCriteria criteria = new SearchCriteria();
         criteria.setCriteria(c2);
-        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "sourceSystem", false, 0, 10);
+        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "esbSourceSystem", false, 0, 10);
         result = service.getMessageById(result.getMessages()[0].getId());
         Assert.assertEquals("<Payload>NotHiddenPayload</Payload>",result.getMessages()[0].getPayload());
     }
@@ -358,10 +358,10 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
         } catch (IOException e) {
             Assert.fail();
         }
-        Criterion[] c3 = {new Criterion(SearchField.sourceSystem, "SourceSystemOne"),new Criterion(SearchField.messageType, "EntityOne")};
+        Criterion[] c3 = {new Criterion(SearchField.esbSourceSystem, "SourceSystemOne"),new Criterion(SearchField.esbMessageType, "EntityOne")};
         SearchCriteria criteria = new SearchCriteria();
         criteria.setCriteria(c3);
-        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "sourceSystem", false, 0, 10);
+        SearchResult result = service.searchMessagesByCriteria(criteria, null, null, "esbSourceSystem", false, 0, 10);
         result = service.getMessageById(result.getMessages()[0].getId());
         Assert.assertEquals("EntityOne messages from SourceSystemOne are restricted",result.getMessages()[0].getPayload());
     }
@@ -387,17 +387,17 @@ public class ErrorServiceTest extends EsbMessageAdminTestBase {
             Assert.fail();
         }
 
-         Criterion[] c1 = {new Criterion(SearchField.messageGuid, "MessageGuid9")};
+         Criterion[] c1 = {new Criterion(SearchField.esbMessageGuid, "MessageGuid9")};
          SearchCriteria criteria1 = new SearchCriteria();
          criteria1.setCriteria(c1);
-         SearchResult result = service.searchMessagesByCriteria(criteria1, null, null, "sourceSystem", true, 0, 10);
+         SearchResult result = service.searchMessagesByCriteria(criteria1, null, null, "esbSourceSystem", true, 0, 10);
 
          Assert.assertEquals("SourceSystem0", result.getMessages()[0].getSourceSystem());
          Assert.assertEquals("SourceSystem1", result.getMessages()[1].getSourceSystem());
          Assert.assertEquals("SourceSystem2", result.getMessages()[2].getSourceSystem());
          Assert.assertEquals("SourceSystem3", result.getMessages()[3].getSourceSystem());
 
-         result = service.searchMessagesByCriteria(criteria1, null, null, "sourceSystem", false, 0, 10);
+         result = service.searchMessagesByCriteria(criteria1, null, null, "esbSourceSystem", false, 0, 10);
 
          Assert.assertEquals("SourceSystem0", result.getMessages()[3].getSourceSystem());
          Assert.assertEquals("SourceSystem1", result.getMessages()[2].getSourceSystem());
